@@ -1,0 +1,21 @@
+We will be talking about our work titled DIRECT: When and Where Should You Allocate Test-Time Compute in Embodied Planners?
+
+Vision-Language Models (VLMs) are increasingly deployed as high-level planners that decompose abstract instructions into executable sub-skills for embodied agents. In this hierarchy, an orchestrating VLM planner generates skill plans that are enacted by a low-level policy.
+
+An emerging strategy to improve performance is scaling the compute cost expended at inference—this cost is known as test-time compute. We investigate three axes of scaling test-time compute for embodied planners: chain-of-thought depth, model size, and memory history.
+
+In our preliminary investigations on these three axes, we find that scaling test-time compute is not free in robotics. Chain-of-thought helps under hidden constraints, yet on 44% of tasks Instruct ties Thinking far more cheaply. Model size broadens skills but scales erratically. Memory helps history-dependent tasks but hurts elsewhere.
+
+These investigations yield three trends: (1) large capability gaps separate cheap and expensive configurations; (2) the gaps are non-uniform, hinging on task-specific demands like skill command or recall horizon; and (3) lightweight models suffice on many tasks.
+
+Since any static model fixes a single latency–capability compromise, these observations motivate a framework that infers each task's demands from the scene context and allocates compute per task accordingly.
+
+We introduce our routing framework DIRECT, which aims to learn a mapping from a task's scene and instruction to the planner best suited to solve it. Given a user instruction and scene observation, our lightweight router DIRECT selects the planner with the best quality–cost tradeoff from a fixed pool of VLM planners.
+
+The chosen VLM decomposes the instruction into primitive subskills executed by a low-level VLA policy, while a transition detector triggers replanning for multi-stage tasks. By conditioning on multimodal context, DIRECT allocates test-time compute per task rather than using a single fixed-capability planner.
+
+In simulation across VLABench and RoboMME, DIRECT achieves the best routing efficiency in every configuration. It recovers or even outperforms the strongest model at lower latency, and turns the erratic size-scaling curve into monotonic improvement.
+
+On Franka DROID, DIRECT matches or exceeds a stronger model at up to 65% lower latency. On multi-step grocery bagging it reaches 95% success at 7 seconds—versus the Thinking planner's 90% at 20 seconds. We find improvements for chain-of-thought depth and memory routing on hardware.
+
+To conclude, naively scaling test-time compute is wasteful, and our investigations document how different axes of test-time compute show qualitatively different capability profiles. Treating the planner as a dynamic variable enables frontier-level embodied planning at a fraction of the cost, with difficulty inferred from fast-to-compute embeddings.

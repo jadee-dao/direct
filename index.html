@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="DIRECT: When and Where Should You Allocate Test-Time Compute in Embodied Planners?">
+  <meta name="description" content="DIRECT is a routing framework that allocates test-time compute per task for embodied VLM planners, matching frontier success at up to 65% lower latency across chain-of-thought, model size, and memory.">
+  <meta name="keywords" content="embodied AI, vision-language models, test-time compute, model routing, hierarchical planning, robot learning, VLM planner, robotics, machine learning">
+  <meta name="author" content="Jadelynn Dao, Milan Ganai, Yasmina Abukhadra, Ajay Sridhar, Mozhgan Nasr Azadani, Katie Luo, Clark Barrett, Jiajun Wu, Chelsea Finn, Marco Pavone">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DIRECT">
+  <meta property="og:title" content="DIRECT: When and Where Should You Allocate Test-Time Compute in Embodied Planners?">
+  <meta property="og:description" content="A routing framework that allocates test-time compute per task for embodied VLM planners, matching frontier success at up to 65% lower latency.">
+  <meta property="og:url" content="https://jadee-dao.github.io/direct/">
+  <meta property="og:image" content="https://jadee-dao.github.io/direct/static/images/social_preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DIRECT: routing test-time compute for embodied planning">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DIRECT: When and Where Should You Allocate Test-Time Compute in Embodied Planners?">
+  <meta name="twitter:description" content="A routing framework that allocates test-time compute per task for embodied VLM planners, matching frontier success at up to 65% lower latency.">
+  <meta name="twitter:image" content="https://jadee-dao.github.io/direct/static/images/social_preview.png">
+  <meta name="twitter:image:alt" content="DIRECT: routing test-time compute for embodied planning">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>DIRECT: When and Where Should You Allocate Test-Time Compute in Embodied Planners?</title>
+
+  <!-- Favicon: compass emoji -->
+  <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;&#129517;&lt;/text&gt;&lt;/svg&gt;">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">&#129517;&nbsp;DIRECT: When and Where Should You<br>Allocate Test-Time Compute in Embodied Planners?</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="mailto:jadelynn@cs.stanford.edu">Jadelynn Dao</a><sup>1,&#10038;</sup>,</span>
+              <span class="author-block"><a href="mailto:mganai@cs.stanford.edu">Milan Ganai</a><sup>1,&#10038;</sup>,</span>
+              <span class="author-block">Yasmina Abukhadra<sup>1</sup>,</span>
+              <span class="author-block">Ajay Sridhar<sup>1</sup>,</span>
+              <span class="author-block">Mozhgan Nasr Azadani<sup>1,2</sup>,</span>
+              <span class="author-block">Katie Luo<sup>1</sup>,</span>
+              <span class="author-block">Clark Barrett<sup>1</sup>,</span>
+              <span class="author-block">Jiajun Wu<sup>1</sup>,</span>
+              <span class="author-block">Chelsea Finn<sup>1</sup>,</span>
+              <span class="author-block">Marco Pavone<sup>1,3</sup></span>
+            </div>
+            <div class="is-size-6 publication-authors">
+              <span class="author-block"><sup>1</sup>Stanford University</span>&nbsp;&nbsp;
+              <span class="author-block"><sup>2</sup>University of Waterloo</span>&nbsp;&nbsp;
+              <span class="author-block"><sup>3</sup>NVIDIA</span>
+            </div>
+            <div class="is-size-7 publication-authors">
+              <span class="author-block"><sup>&#10038;</sup>Equal contribution</span>
+            </div>
+
+            <div style="margin: 2rem auto; display: flex; justify-content: center;">
+              <img src="static/images/hero.svg" alt="DIRECT Overview" style="width: 100%; max-width: 900px; height: auto;">
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links direct-chips">
+                <!-- Paper (arXiv) — coming soon -->
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded" aria-disabled="true"
+                     style="pointer-events:none; opacity:0.6;">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper (coming soon)</span>
+                </a>
+              </span>
+
+                <!-- Code -->
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded" aria-disabled="true"
+                     style="pointer-events:none; opacity:0.6;">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (coming soon)</span>
+                </a>
+              </span>
+
+
+                <!-- Video overview -->
+                <span class="link-block">
+                  <a href="#video-overview"
+                  class="external-link button is-normal is-rounded">
+                  <span class="icon">
+                    <i class="fas fa-play-circle"></i>
+                  </span>
+                  <span>Video Overview</span>
+                </a>
+              </span>
+
+                <!-- Hardware demo videos -->
+                <span class="link-block">
+                  <a href="https://jadee-dao.github.io/direct/video-demos-html/" target="_blank"
+                  class="external-link button is-normal is-rounded">
+                  <span class="icon">
+                    <i class="fas fa-robot"></i>
+                  </span>
+                  <span>Hardware Demos</span>
+                </a>
+              </span>
+
+              <!-- Jump to abstract -->
+              <span class="link-block">
+                <a href="#abstract"
+                class="external-link button is-normal is-rounded">
+                <span class="icon">
+                  <i class="fas fa-align-left"></i>
+                </span>
+                <span>Abstract</span>
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video -->
+<section class="hero teaser" id="video-overview">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" controls loop playsinline preload="metadata">
+        <source src="static/videos/direct_corl_2026_video.mp4" type="video/mp4">
+      </video>
+      <details class="transcript">
+        <summary>Video transcript</summary>
+        <div class="content has-text-justified">
+          <p>We will be talking about our work titled <em>DIRECT: When and Where Should You Allocate Test-Time
+            Compute in Embodied Planners?</em></p>
+          <p>Vision-Language Models (VLMs) are increasingly deployed as high-level planners that decompose abstract
+            instructions into executable sub-skills for embodied agents. In this hierarchy, an orchestrating VLM
+            planner generates skill plans that are enacted by a low-level policy.</p>
+          <p>An emerging strategy to improve performance is scaling the compute cost expended at inference&mdash;this
+            cost is known as test-time compute. We investigate three axes of scaling test-time compute for embodied
+            planners: chain-of-thought depth, model size, and memory history.</p>
+          <p>In our preliminary investigations on these three axes, we find that scaling test-time compute is not free
+            in robotics. Chain-of-thought helps under hidden constraints, yet on 44% of tasks Instruct ties Thinking
+            far more cheaply. Model size broadens skills but scales erratically. Memory helps history-dependent tasks
+            but hurts elsewhere.</p>
+          <p>These investigations yield three trends: (1) large capability gaps separate cheap and expensive
+            configurations; (2) the gaps are non-uniform, hinging on task-specific demands like skill command or recall
+            horizon; and (3) lightweight models suffice on many tasks.</p>
+          <p>Since any static model fixes a single latency&ndash;capability compromise, these observations motivate a
+            framework that infers each task's demands from the scene context and allocates compute per task
+            accordingly.</p>
+          <p>We introduce our routing framework DIRECT, which aims to learn a mapping from a task's scene and
+            instruction to the planner best suited to solve it. Given a user instruction and scene observation, our
+            lightweight router DIRECT selects the planner with the best quality&ndash;cost tradeoff from a fixed pool
+            of VLM planners.</p>
+          <p>The chosen VLM decomposes the instruction into primitive subskills executed by a low-level VLA policy,
+            while a transition detector triggers replanning for multi-stage tasks. By conditioning on multimodal
+            context, DIRECT allocates test-time compute per task rather than using a single fixed-capability
+            planner.</p>
+          <p>In simulation across VLABench and RoboMME, DIRECT achieves the best routing efficiency in every
+            configuration. It recovers or even outperforms the strongest model at lower latency, and turns the erratic
+            size-scaling curve into monotonic improvement.</p>
+          <p>On Franka DROID, DIRECT matches or exceeds a stronger model at up to 65% lower latency. On multi-step
+            grocery bagging it reaches 95% success at 7 seconds&mdash;versus the Thinking planner's 90% at 20 seconds.
+            We find improvements for chain-of-thought depth and memory routing on hardware.</p>
+          <p>To conclude, naively scaling test-time compute is wasteful, and our investigations document how different
+            axes of test-time compute show qualitatively different capability profiles. Treating the planner as a
+            dynamic variable enables frontier-level embodied planning at a fraction of the cost, with difficulty
+            inferred from fast-to-compute embeddings.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            VLMs are increasingly used as high-level planners for embodied agents, and a common strategy is to scale
+            test-time compute for better capability. But that compute buys uneven, often diminishing gains while adding
+            latency, tokens, and FLOPs. We argue that choosing <em>when and where</em> to spend it is what brings
+            frontier performance to the real world. <strong>DIRECT</strong> is a routing framework that uses multimodal
+            scene context to allocate compute per task, improving the success&ndash;cost frontier over any fixed model.
+            Across three axes &mdash; chain-of-thought depth, model size, and memory history &mdash; we show test-time
+            compute is not a uniform lever as each yields distinct capability gains. On VLABench, RoboMME, and a physical
+            Franka arm, <strong>DIRECT</strong> matches or beats a stronger model's success at up to 65% lower latency. Our results show
+            that naively scaling test-time compute is wasteful, and that <strong>DIRECT</strong> can provide
+            frontier-level planning in robotic systems at a fraction of the cost.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<!-- Three axes overview -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">How Test-Time Compute Impacts Embodied Planning</h2>
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5"><i class="fas fa-brain"></i>&nbsp; Chain-of-Thought</h3>
+          <p>On <strong>44%</strong> of VLABench tasks, the non-thinking model matches or beats Thinking at
+            <strong>&lt;2%</strong> of the latency &mdash; about <strong>63&times; faster</strong> (1.9&nbsp;s vs
+            118&nbsp;s). Reasoning pays off only sometimes.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5"><i class="fas fa-expand-arrows-alt"></i>&nbsp; Model Size</h3>
+          <p>Scaling <strong>2B&rarr;235B</strong> is non-monotonic &mdash; a 32B planner can even run slower than
+            235B. Size mainly governs the <strong>breadth of skills</strong> a planner can command, useful only when a
+            task needs them.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5"><i class="fas fa-history"></i>&nbsp; Memory</h3>
+          <p><strong>No single architecture dominates:</strong> on easy tasks a lightweight scheme beats MemER at
+            <strong>~10&times; fewer FLOPs</strong>, while MemER and GroundSG lead on hard, long-recall tasks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End three axes overview -->
+
+
+<!-- Method -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">DIRECT: An Embodied Routing Framework</h2>
+      </div>
+    </div>
+    <div style="margin: 0 auto 2rem; display: flex; justify-content: center;">
+      <img src="static/images/framework.svg" alt="DIRECT framework: a lightweight router maps scene and instruction to the best planner from a fixed pool" style="width: 100%; height: auto;">
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>
+            From a scene image and instruction, a lightweight router picks the best planner from a fixed pool. It
+            encodes this multimodal information and predicts the quality&ndash;cost tradeoff
+            per planner. The router runs once per task (or can be called many times for multi-stage tasks), and deploys zero-shot
+            on hardware.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End method -->
+
+
+<!-- Key results -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+    <div class="content has-text-justified">
+      <p class="has-text-centered">
+        Across <strong>270,000+</strong> simulated routing decisions and <strong>245</strong> hardware trajectories,
+        spanning all three test-time-compute axes.
+      </p>
+    </div>
+
+    <h3 class="title is-5 has-text-centered">Multi-Step Grocery Bagging (Heaviest&rarr;Lightest), Franka DROID</h3>
+    <div class="columns is-centered">
+      <div class="column is-three-fifths">
+        <table class="table is-fullwidth is-hoverable results-table">
+          <thead>
+            <tr>
+              <th>Planner</th>
+              <th class="has-text-right">Success (%)</th>
+              <th class="has-text-right">Latency (s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="planner-row planner-light">
+              <td>Qwen3.5-VL 9B (No Thinking)</td>
+              <td class="has-text-right num">47.62</td>
+              <td class="has-text-right num">2.19</td>
+            </tr>
+            <tr class="planner-row planner-strong">
+              <td>Qwen3.5-VL 9B (Thinking)</td>
+              <td class="has-text-right num">90.48</td>
+              <td class="has-text-right num">19.58</td>
+            </tr>
+            <tr class="planner-row is-direct-row">
+              <td><strong>DIRECT (Ours)</strong></td>
+              <td class="has-text-right num"><strong>95.24</strong></td>
+              <td class="has-text-right num"><strong>6.85</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="is-size-7 has-text-centered">
+          Routing step-wise, DIRECT beats both planners on success while matching Thinking at a fraction of the latency.
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5">Chain-of-Thought</h3>
+          <p>On VLABench, DIRECT has the <strong>best routing efficiency in every
+            thinking/non-thinking pair</strong> &mdash; recovering near-expensive quality at ~30% lower latency.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5">Model Size</h3>
+          <p>Cumulative routing over 2B&ndash;235B turns the erratic size curve monotonic &mdash; at the largest
+            model, adding <strong>+5.1 points</strong> of success while cutting <strong>32.4&nbsp;s</strong> of average
+            latency.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="content has-text-centered">
+          <h3 class="title is-5">Memory</h3>
+          <p>Beats the best single memory architecture at a <strong>fraction of MemER's cost</strong> &mdash; paying
+            recall overhead only when a task genuinely needs it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End key results -->
+
+
+<!-- Hardware demos callout -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Routing Video Demos</h2>
+    <div class="content has-text-justified">
+      <p class="has-text-centered">
+        Watch DIRECT route on a physical Franka arm &mdash; hit <em>Run</em> to see the planner reason before it
+        acts.
+      </p>
+    </div>
+    <a href="https://jadee-dao.github.io/direct/video-demos-html/" target="_blank"
+       class="external-link button is-large is-rounded is-dark">
+      <span class="icon"><i class="fas fa-play-circle"></i></span>
+      <span>Open Interactive Demos</span>
+    </a>
+  </div>
+</section>
+<!-- End hardware demos callout -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io/" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  </body>
+  </html>
