@@ -382,11 +382,6 @@
     </div>
 
     <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
-    <p class="has-text-centered" style="max-width:720px; margin:1.2rem auto .3rem; font-size:.95rem;">
-      Each clip auto-runs and <b>pauses while the VLM planner generates the next subgoal</b> &mdash; the bar fills
-      over the real planning latency, then the arm executes. DIRECT escalates to a <b>thinking</b> planner only on
-      the hard pick; Thinking pays that cost on every one.
-    </p>
     <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:.7rem;">
       <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
     </p>
@@ -502,14 +497,16 @@
   <script>
   (function(){
     var SPEED=0.4, MIN_WALL=280, MAXBAR=4500, RATE=2.5;   // matches the interactive demo
-    function drive(col){
+    var killed=false;
+    // returns a runOnce() that plays this column's sequence once and resolves when it ends
+    function makeRunner(col){
       var video=col.querySelector("video");
-      var steps; try{ steps=JSON.parse(col.getAttribute("data-steps")); }catch(e){ return; }
+      var steps; try{ steps=JSON.parse(col.getAttribute("data-steps")); }catch(e){ return null; }
       var plan=col.querySelector(".ttc-plan"),
           bar=col.querySelector(".ttc-plan-bar > span"),
           lab=col.querySelector(".ttc-plan-lab"),
           sg=col.querySelector(".ttc-subgoal");
-      var killed=false, raf=null;
+      var raf=null;
       function planPhase(s){
         return new Promise(function(res){
           try{video.pause();}catch(e){}
@@ -546,23 +543,32 @@
           })();
         });
       }
-      function run(){
+      return function runOnce(){
         var i=0;
-        (function next(){
-          if(killed) return;
-          if(i>=steps.length){ setTimeout(function(){ if(!killed){ i=0; next(); } }, 800); return; }
-          var s=steps[i++];
-          planPhase(s).then(function(){ if(killed) return; return playPhase(s); }).then(next);
-        })();
-      }
-      run();
+        return new Promise(function(resolve){
+          (function next(){
+            if(killed || i>=steps.length) return resolve();
+            var s=steps[i++];
+            planPhase(s).then(function(){ if(killed) return resolve(); return playPhase(s); }).then(next);
+          })();
+        });
+      };
     }
     function init(){
       var wrap=document.querySelector(".ttc-compare");
       if(!wrap) return;
-      var cols=[].slice.call(wrap.querySelectorAll(".ttc-col"));
+      var runners=[].slice.call(wrap.querySelectorAll(".ttc-col")).map(makeRunner).filter(Boolean);
+      if(!runners.length) return;
       var started=false;
-      function go(){ if(started) return; started=true; cols.forEach(drive); }
+      function loopAll(){
+        if(killed) return;
+        // wait for ALL columns to finish their pass, then reloop together
+        Promise.all(runners.map(function(r){ return r(); })).then(function(){
+          if(killed) return;
+          setTimeout(loopAll, 900);
+        });
+      }
+      function go(){ if(started) return; started=true; loopAll(); }
       if("IntersectionObserver" in window){
         var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ go(); io.disconnect(); } }); }, {threshold:0.15});
         io.observe(wrap);
