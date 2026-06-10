@@ -349,8 +349,11 @@
     <h3 class="title is-5 has-text-centered">Multi-Step Grocery Bagging (Heaviest&rarr;Lightest), Franka DROID</h3>
 
     <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
+    <p class="has-text-centered" style="font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:1.08rem; font-weight:600; color:#1f2328; margin:0 auto .2rem; max-width:680px; letter-spacing:-.2px;">
+      &ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;
+    </p>
     <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:.7rem;">
-      <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
+      planning bars run at <b>6&times; speed</b>, to the same scale across all three
     </p>
     <div class="ttc-legend2">
       <span><span class="sw base"></span>planning (fast)</span>
@@ -500,7 +503,7 @@
   <!-- Multi-step demo: pause the video while the VLM planner generates each subgoal -->
   <script>
   (function(){
-    var SPEED=0.4, MIN_WALL=280, MAXBAR=4500, RATE=2.5;   // matches the interactive demo
+    var SPEEDUP=6, MIN_WALL=120, RATE=2.5;   // planning bars shown at SPEEDUP× real time, same scale for all
     var killed=false;
     // returns a runOnce() that plays this column's sequence once and resolves when it ends
     function makeRunner(col){
@@ -518,7 +521,7 @@
           plan.classList.add("show");
           plan.classList.toggle("is-think", s.mode==="think");
           sg.classList.remove("show");
-          var wall=Math.min(Math.max(MIN_WALL, s.lat*SPEED), MAXBAR);
+          var wall=Math.max(MIN_WALL, (s.lat/SPEEDUP));   // proportional to real latency — no cap, same scale for all
           var real=s.lat/1000, start=performance.now();
           (function tick(now){
             if(killed) return;
