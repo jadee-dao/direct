@@ -238,7 +238,9 @@ body {
 .transcript .content {
   margin: 0 1.25rem 1.25rem;
   padding: 0.75rem 1rem;
-  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
   max-height: 220px;
   overflow-y: auto;
   border-top: 1px solid var(--border-color);
