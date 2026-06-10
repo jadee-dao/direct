@@ -376,6 +376,18 @@ body {
   margin-right: 0.5rem;
 }
 
+/* DIRECT compass marker for equal contribution (in place of a star) */
+.eq-mark {
+  font-size: 0.7em;
+  vertical-align: super;
+  margin-left: 1px;
+  line-height: 0;
+}
+.is-size-7 .eq-mark {
+  font-size: 1em;
+  vertical-align: baseline;
+}
+
 .publication-banner img {
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
