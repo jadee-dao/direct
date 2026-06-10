@@ -381,6 +381,71 @@
       </div>
     </div>
 
+    <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
+    <p class="has-text-centered" style="max-width:720px; margin:1.2rem auto .3rem; font-size:.95rem;">
+      The same run, three policies. Each pick is preceded by a bar showing its <b>planning time</b>
+      &mdash; DIRECT escalates to a <b>thinking</b> planner only on the hard pick, while Thinking pays that cost on every one.
+    </p>
+    <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:.7rem;">
+      <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
+    </p>
+    <div class="ttc-legend2">
+      <span><span class="sw base"></span>fast plan</span>
+      <span><span class="sw think"></span>thinking</span>
+      <span style="opacity:.75;">bars to scale across all three</span>
+    </div>
+
+    <div class="ttc-compare">
+      <!-- No thinking -->
+      <div class="ttc-col">
+        <div class="ttc-head"><span class="m">No&nbsp;thinking</span><span class="s">fast &mdash; but grabs the wrong fruit</span></div>
+        <video autoplay muted loop playsinline controls preload="metadata">
+          <source src="video-demos-html/GOOD_VIDEOS/fruit_nothink_run_2026_05_21_10-54-54/video.mp4" type="video/mp4">
+        </video>
+        <div class="ttc-flow">
+          <div class="ttc-seg"><span class="ttc-bar" style="width:2.3%"></span><span class="ttc-ptime">1.3s</span></div>
+          <div class="ttc-node"><span class="d"></span>yellow banana</div>
+          <div class="ttc-seg"><span class="ttc-bar" style="width:1.3%"></span><span class="ttc-ptime">0.7s</span></div>
+          <div class="ttc-node"><span class="d"></span>red strawberry</div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">2.0s total</span> &middot; <span class="ttc-bad">&#10007; wrong order, gives up</span></div>
+      </div>
+
+      <!-- DIRECT (router) -->
+      <div class="ttc-col is-direct">
+        <div class="ttc-head"><span class="m">DIRECT</span><span class="s">routes per subgoal &mdash; thinks only on the hard pick</span></div>
+        <video autoplay muted loop playsinline controls preload="metadata">
+          <source src="video-demos-html/GOOD_VIDEOS/1_routingmultitaskdrop_run_2026_05_21_10-11-32/video.mp4" type="video/mp4">
+        </video>
+        <div class="ttc-flow">
+          <div class="ttc-seg"><span class="ttc-bar" style="width:1.8%"></span><span class="ttc-ptime">1.0s</span></div>
+          <div class="ttc-node"><span class="d"></span>yellow banana</div>
+          <div class="ttc-seg is-think"><span class="ttc-bar" style="width:34%"></span><span class="ttc-ptime">19.0s</span></div>
+          <div class="ttc-node"><span class="d"></span>green lime</div>
+          <div class="ttc-seg"><span class="ttc-bar" style="width:0.9%"></span><span class="ttc-ptime">0.5s</span></div>
+          <div class="ttc-node"><span class="d"></span>red strawberry</div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">20.5s total</span> &middot; <span class="ttc-ok">&#10003; correct order</span></div>
+      </div>
+
+      <!-- Think only -->
+      <div class="ttc-col">
+        <div class="ttc-head"><span class="m">Thinking</span><span class="s">reasons on every pick &mdash; even the easy ones</span></div>
+        <video autoplay muted loop playsinline controls preload="metadata">
+          <source src="video-demos-html/GOOD_VIDEOS/fruit_allthink_run_2026_05_20_17-35-43/video.mp4" type="video/mp4">
+        </video>
+        <div class="ttc-flow">
+          <div class="ttc-seg is-think"><span class="ttc-bar" style="width:22.9%"></span><span class="ttc-ptime">12.8s</span></div>
+          <div class="ttc-node"><span class="d"></span>yellow banana</div>
+          <div class="ttc-seg is-think"><span class="ttc-bar" style="width:64.5%"></span><span class="ttc-ptime">36.1s</span></div>
+          <div class="ttc-node"><span class="d"></span>green apple</div>
+          <div class="ttc-seg is-think"><span class="ttc-bar" style="width:99%"></span><span class="ttc-ptime">55.6s</span></div>
+          <div class="ttc-node"><span class="d"></span>orange fruit</div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">104.6s total</span> &middot; <span class="ttc-ok">&#10003; correct, but slow</span></div>
+      </div>
+    </div>
+
     <div class="columns is-centered">
       <div class="column">
         <div class="content has-text-centered">
@@ -419,61 +484,6 @@
         Watch DIRECT route on a physical Franka arm &mdash; hit <em>Run</em> to see the planner reason before it
         acts.
       </p>
-    </div>
-
-    <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
-    <p class="has-text-centered" style="max-width:700px; margin:0 auto .4rem; font-size:.95rem;">
-      Same multi-step task, three policies. Each column lists the <b>subgoals</b> the planner generated and
-      the <b>planning time</b> per subgoal &mdash; DIRECT escalates to a thinking planner only on the hard pick.
-    </p>
-    <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:1.1rem;">
-      <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
-    </p>
-
-    <div class="ttc-compare">
-      <!-- No thinking -->
-      <div class="ttc-col">
-        <div class="ttc-head"><span class="m">No&nbsp;thinking</span><span class="s">fast &mdash; but grabs the wrong fruit</span></div>
-        <video autoplay muted loop playsinline controls preload="metadata">
-          <source src="video-demos-html/GOOD_VIDEOS/fruit_nothink_run_2026_05_21_10-54-54/video.mp4" type="video/mp4">
-        </video>
-        <ul class="ttc-steps">
-          <li class="ttc-step ttc-legend"><span>subgoal</span><span>plan&nbsp;time</span></li>
-          <li class="ttc-step"><span class="ttc-goal">yellow banana</span><span class="ttc-lat">1.3s</span></li>
-          <li class="ttc-step"><span class="ttc-goal">red strawberry</span><span class="ttc-lat">0.7s</span></li>
-        </ul>
-        <div class="ttc-foot"><span class="ttc-total">2.0s total</span> &middot; <span class="ttc-bad">&#10007; wrong order, gives up</span></div>
-      </div>
-
-      <!-- DIRECT (router) -->
-      <div class="ttc-col is-direct">
-        <div class="ttc-head"><span class="m">DIRECT</span><span class="s">routes per subgoal &mdash; thinks only on the hard pick</span></div>
-        <video autoplay muted loop playsinline controls preload="metadata">
-          <source src="video-demos-html/GOOD_VIDEOS/1_routingmultitaskdrop_run_2026_05_21_10-11-32/video.mp4" type="video/mp4">
-        </video>
-        <ul class="ttc-steps">
-          <li class="ttc-step ttc-legend"><span>subgoal</span><span>plan&nbsp;time</span></li>
-          <li class="ttc-step"><span class="ttc-goal">yellow banana</span><span class="ttc-lat">1.0s</span></li>
-          <li class="ttc-step ttc-think"><span class="ttc-goal">green lime</span><span class="ttc-lat">thinks &middot; 19.0s</span></li>
-          <li class="ttc-step"><span class="ttc-goal">red strawberry</span><span class="ttc-lat">0.5s</span></li>
-        </ul>
-        <div class="ttc-foot"><span class="ttc-total">20.5s total</span> &middot; <span class="ttc-ok">&#10003; correct order</span></div>
-      </div>
-
-      <!-- Think only -->
-      <div class="ttc-col">
-        <div class="ttc-head"><span class="m">Thinking</span><span class="s">reasons on every pick &mdash; even the easy ones</span></div>
-        <video autoplay muted loop playsinline controls preload="metadata">
-          <source src="video-demos-html/GOOD_VIDEOS/fruit_allthink_run_2026_05_20_17-35-43/video.mp4" type="video/mp4">
-        </video>
-        <ul class="ttc-steps">
-          <li class="ttc-step ttc-legend"><span>subgoal</span><span>plan&nbsp;time</span></li>
-          <li class="ttc-step ttc-think"><span class="ttc-goal">yellow banana</span><span class="ttc-lat">thinks &middot; 12.8s</span></li>
-          <li class="ttc-step ttc-think"><span class="ttc-goal">green apple</span><span class="ttc-lat">thinks &middot; 36.1s</span></li>
-          <li class="ttc-step ttc-think"><span class="ttc-goal">orange fruit</span><span class="ttc-lat">thinks &middot; 55.6s</span></li>
-        </ul>
-        <div class="ttc-foot"><span class="ttc-total">104.6s total</span> &middot; <span class="ttc-ok">&#10003; correct, but slow</span></div>
-      </div>
     </div>
 
     <a href="https://jadee-dao.github.io/direct/video-demos-html/" target="_blank"
