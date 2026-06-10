@@ -347,6 +347,54 @@
     </div>
 
     <h3 class="title is-5 has-text-centered">Multi-Step Grocery Bagging (Heaviest&rarr;Lightest), Franka DROID</h3>
+
+    <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
+    <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:.7rem;">
+      <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
+    </p>
+    <div class="ttc-legend2">
+      <span><span class="sw base"></span>planning (fast)</span>
+      <span><span class="sw think"></span>thinking</span>
+    </div>
+
+    <div class="ttc-compare">
+      <!-- No thinking -->
+      <div class="ttc-col" data-fail="1" data-steps='[{"si":"put the yellow banana in the white bin","mode":"base","lat":1336,"t0":0,"t1":8.0},{"si":"put the red strawberry in the white bin","mode":"base","lat":656,"t0":8.0,"t1":12.0}]'>
+        <div class="ttc-head"><span class="m">No&nbsp;thinking</span><span class="s">fast &mdash; but grabs the wrong fruit</span></div>
+        <div class="ttc-stage">
+          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_nothink_run_2026_05_21_10-54-54/video.mp4" type="video/mp4"></video></div>
+          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
+          <div class="ttc-subgoal"></div>
+          <div class="ttc-fail"></div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">2.0s planning</span> &middot; <span class="ttc-bad">&#10007; wrong order</span></div>
+      </div>
+
+      <!-- DIRECT (router) -->
+      <div class="ttc-col is-direct" data-steps='[{"si":"put the yellow banana in the white bin","mode":"base","lat":1026,"t0":0,"t1":12.0},{"si":"put the green lime in the white bin","mode":"think","lat":19039,"t0":12.0,"t1":32.0},{"si":"put the red strawberry in the white bin","mode":"base","lat":477,"t0":32.0,"t1":40.1}]'>
+        <div class="ttc-head"><span class="m">DIRECT</span><span class="s">routes per subgoal &mdash; thinks only on the hard pick</span></div>
+        <div class="ttc-stage">
+          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/1_routingmultitaskdrop_run_2026_05_21_10-11-32/video.mp4" type="video/mp4"></video></div>
+          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
+          <div class="ttc-subgoal"></div>
+          <div class="ttc-fail"></div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">20.5s planning</span> &middot; <span class="ttc-ok">&#10003; correct order</span></div>
+      </div>
+
+      <!-- Think only -->
+      <div class="ttc-col" data-steps='[{"si":"put the yellow banana in the white bin","mode":"think","lat":12849,"t0":0,"t1":20.0},{"si":"put the green apple in the white bin","mode":"think","lat":36149,"t0":20.0,"t1":24.0},{"si":"put the orange fruit in the white bin","mode":"think","lat":55594,"t0":24.0,"t1":29.9}]'>
+        <div class="ttc-head"><span class="m">Thinking</span><span class="s">reasons on every pick &mdash; even the easy ones</span></div>
+        <div class="ttc-stage">
+          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_allthink_run_2026_05_20_17-35-43/video.mp4" type="video/mp4"></video></div>
+          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
+          <div class="ttc-subgoal"></div>
+          <div class="ttc-fail"></div>
+        </div>
+        <div class="ttc-foot"><span class="ttc-total">104.6s planning</span> &middot; <span class="ttc-ok">&#10003; correct, but slow</span></div>
+      </div>
+    </div>
+
     <div class="columns is-centered">
       <div class="column is-three-fifths">
         <table class="table is-fullwidth is-hoverable results-table">
@@ -378,50 +426,6 @@
         <p class="is-size-7 has-text-centered">
           Routing step-wise, DIRECT beats both planners on success while matching Thinking at a fraction of the latency.
         </p>
-      </div>
-    </div>
-
-    <!-- Multi-step demo: No-think / DIRECT / Think, side by side -->
-    <p class="has-text-centered is-size-7" style="color:var(--text-secondary); margin-bottom:.7rem;">
-      <em>&ldquo;Place the fruits from heaviest to lightest in the white bin.&rdquo;</em>
-    </p>
-    <div class="ttc-legend2">
-      <span><span class="sw base"></span>planning (fast)</span>
-      <span><span class="sw think"></span>thinking</span>
-    </div>
-
-    <div class="ttc-compare">
-      <!-- No thinking -->
-      <div class="ttc-col" data-steps='[{"si":"put the yellow banana in the white bin","mode":"base","lat":1336,"t0":0,"t1":8.0},{"si":"put the red strawberry in the white bin","mode":"base","lat":656,"t0":8.0,"t1":12.0}]'>
-        <div class="ttc-head"><span class="m">No&nbsp;thinking</span><span class="s">fast &mdash; but grabs the wrong fruit</span></div>
-        <div class="ttc-stage">
-          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_nothink_run_2026_05_21_10-54-54/video.mp4" type="video/mp4"></video></div>
-          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
-          <div class="ttc-subgoal"></div>
-        </div>
-        <div class="ttc-foot"><span class="ttc-total">2.0s planning</span> &middot; <span class="ttc-bad">&#10007; wrong order, gives up</span></div>
-      </div>
-
-      <!-- DIRECT (router) -->
-      <div class="ttc-col is-direct" data-steps='[{"si":"put the yellow banana in the white bin","mode":"base","lat":1026,"t0":0,"t1":12.0},{"si":"put the green lime in the white bin","mode":"think","lat":19039,"t0":12.0,"t1":32.0},{"si":"put the red strawberry in the white bin","mode":"base","lat":477,"t0":32.0,"t1":40.1}]'>
-        <div class="ttc-head"><span class="m">DIRECT</span><span class="s">routes per subgoal &mdash; thinks only on the hard pick</span></div>
-        <div class="ttc-stage">
-          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/1_routingmultitaskdrop_run_2026_05_21_10-11-32/video.mp4" type="video/mp4"></video></div>
-          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
-          <div class="ttc-subgoal"></div>
-        </div>
-        <div class="ttc-foot"><span class="ttc-total">20.5s planning</span> &middot; <span class="ttc-ok">&#10003; correct order</span></div>
-      </div>
-
-      <!-- Think only -->
-      <div class="ttc-col" data-steps='[{"si":"put the yellow banana in the white bin","mode":"think","lat":12849,"t0":0,"t1":20.0},{"si":"put the green apple in the white bin","mode":"think","lat":36149,"t0":20.0,"t1":24.0},{"si":"put the orange fruit in the white bin","mode":"think","lat":55594,"t0":24.0,"t1":29.9}]'>
-        <div class="ttc-head"><span class="m">Thinking</span><span class="s">reasons on every pick &mdash; even the easy ones</span></div>
-        <div class="ttc-stage">
-          <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_allthink_run_2026_05_20_17-35-43/video.mp4" type="video/mp4"></video></div>
-          <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
-          <div class="ttc-subgoal"></div>
-        </div>
-        <div class="ttc-foot"><span class="ttc-total">104.6s planning</span> &middot; <span class="ttc-ok">&#10003; correct, but slow</span></div>
       </div>
     </div>
 
@@ -543,11 +547,17 @@
           })();
         });
       }
+      var failEl=col.querySelector(".ttc-fail"), doesFail=col.hasAttribute("data-fail");
       return function runOnce(){
         var i=0;
+        if(failEl) failEl.classList.remove("show");
         return new Promise(function(resolve){
           (function next(){
-            if(killed || i>=steps.length) return resolve();
+            if(killed) return resolve();
+            if(i>=steps.length){
+              if(doesFail && failEl){ failEl.classList.add("show"); sg.classList.remove("show"); }
+              return resolve();
+            }
             var s=steps[i++];
             planPhase(s).then(function(){ if(killed) return resolve(); return playPhase(s); }).then(next);
           })();
