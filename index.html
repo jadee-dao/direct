@@ -365,7 +365,7 @@
           <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_nothink_run_2026_05_21_10-54-54/video.mp4" type="video/mp4"></video></div>
           <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
           <div class="ttc-subgoal"></div>
-          <div class="ttc-fail"></div>
+          <div class="ttc-result"></div>
         </div>
         <div class="ttc-foot"><span class="ttc-total">2.0s planning</span> &middot; <span class="ttc-bad">&#10007; wrong order</span></div>
       </div>
@@ -377,7 +377,7 @@
           <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/1_routingmultitaskdrop_run_2026_05_21_10-11-32/video.mp4" type="video/mp4"></video></div>
           <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
           <div class="ttc-subgoal"></div>
-          <div class="ttc-fail"></div>
+          <div class="ttc-result"></div>
         </div>
         <div class="ttc-foot"><span class="ttc-total">20.5s planning</span> &middot; <span class="ttc-ok">&#10003; correct order</span></div>
       </div>
@@ -389,7 +389,7 @@
           <div class="ttc-crop"><video muted playsinline preload="auto"><source src="video-demos-html/GOOD_VIDEOS/fruit_allthink_run_2026_05_20_17-35-43/video.mp4" type="video/mp4"></video></div>
           <div class="ttc-plan"><div class="ttc-plan-lab">planning…</div><div class="ttc-plan-bar"><span></span></div></div>
           <div class="ttc-subgoal"></div>
-          <div class="ttc-fail"></div>
+          <div class="ttc-result"></div>
         </div>
         <div class="ttc-foot"><span class="ttc-total">104.6s planning</span> &middot; <span class="ttc-ok">&#10003; correct, but slow</span></div>
       </div>
@@ -547,15 +547,15 @@
           })();
         });
       }
-      var failEl=col.querySelector(".ttc-fail"), doesFail=col.hasAttribute("data-fail");
+      var resEl=col.querySelector(".ttc-result"), doesFail=col.hasAttribute("data-fail");
       return function runOnce(){
         var i=0;
-        if(failEl) failEl.classList.remove("show");
+        if(resEl) resEl.classList.remove("show","is-fail","is-ok");
         return new Promise(function(resolve){
           (function next(){
             if(killed) return resolve();
             if(i>=steps.length){
-              if(doesFail && failEl){ failEl.classList.add("show"); sg.classList.remove("show"); }
+              if(resEl){ resEl.classList.add("show", doesFail?"is-fail":"is-ok"); sg.classList.remove("show"); }
               return resolve();
             }
             var s=steps[i++];
